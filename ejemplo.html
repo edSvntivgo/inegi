@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 9pt;
+            font-weight: normal;
+            text-decoration: none;
+            color: #000000;
+        }
+        .controls {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+.pac-container {
+  font-family: Roboto;
+}
+
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+    </style>
+    <script type="text/javascript" src="scripts/funciones_mapa.js"></script>	
+    <script type="text/javascript" src="http://mapas2.inegi.org.mx/espacioyd_map/query?request=Json&var=geeServerDefs"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA7NWXEzJ-RRutuDhaKuFTbVB9pnixS-j8" async defer></script>
+    <script type="text/javascript" src="http://mapas.inegi.org.mx/espacioyd_map/query?request=Json&var=geeServerDefs"></script>
+    <script type="text/javascript" src="http://www.beta.inegi.org.mx/servicios/scripts/fusion_map_obj_v3.js"></script>
+    <script type="text/javascript" src="http://www.beta.inegi.org.mx/servicios/ejemplos/listado_maps/scripts/funciones_mapa.js"></script>
+</head>
+<body onload="inicializa();">
+    <table>
+        <tr>
+            <td style="height: 100%">
+				<div id="divLista" style="height:100%; width:345px;" tabindex="513"></div>
+			</td>
+            <td style="vertical-align:top;">
+                <input id="pac-input" class="controls form-control" type="text" placeholder="Busqueda de Anuncios">
+				<div id="map_canvas" style="height:827px; width:880px;"></div>
+			</td>
+        </tr>
+    </table>
+</body>
+</html>
