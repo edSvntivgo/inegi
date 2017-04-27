@@ -6,6 +6,7 @@ function inicializa() {
     var myOptions = {
         center: new google.maps.LatLng(latI, lngI), zoom: zoomI
     };
+
     for (var i = 0; i < geeServerDefs.layers.length; i++) {
         geeServerDefs.layers[i].initialState = false;
         // obtiene los datos del inpput para la busqueda
@@ -95,49 +96,25 @@ function enciendeApagaCapa(layerId) {
     }
 }
 
-var listadoCapas = {
-	// A continuación se crean las filas de capas que se visualizarán en la lista para activar o desactivar del mapa. 
-	// Como ejemplo se agregan tres de ellas.
-	// Agrega todas las capas que necesites.
-    "version": "03s12i20u14l",
-    "layers": [
-	
-      {
-          "id": "02",
-          "label": "División territorial",
-          "isFolder": true,
-          "state": false,
-          "layers": [
-            {
-				  "id": 1162,
-				  "initialState": true,
-				  "label": "Estatal",
-				  "lookAt": "none",
-				  "opacity": 2,
-				  "requestType": "VectorMapsRaster",
-				  "version": 29
-			  },
-			  {
-				  "id": 1163,
-				  "initialState": true,
-				  "label": "Municipal",
-				  "lookAt": "none",
-				  "opacity": 2,
-				  "requestType": "VectorMapsRaster",
-				  "version": 28
-			  },
-			  {
-					"icon": "icons/ico_manzanasU_l.png",
-					"id": 1166,
-					"initialState": false,
-					"isPng": true,
-					"label": "Colonias",
-					"lookAt": "none",
-					"opacity": 2,
-					"requestType": "VectorMapsRaster",
-					"version": 26
-			  }
-          ]
-      },
+var geeServerDefs = {
+layers : 
+    [
+        {
+            "id": "02",
+            "label": "División territorial",
+            "isFolder": true,
+            "state": false,
+            "layers": [{
+                    icon : "icons/ico_divEstatal_l.png",
+                    id : 1162,
+                    initialState : true,
+                    isPng : true,
+                    label : "Estatal",
+                    lookAt : "none",
+                    opacity : 1,
+                    requestType : "VectorMapsRaster",
+                    version : 59
+          }] 
+        }
     ]
 }

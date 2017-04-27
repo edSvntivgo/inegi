@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Places Searchbox</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 300px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+      #target {
+        width: 345px;
+      }
+    </style>
+  </head>
+  <body>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="map"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+
+      function initAutocomplete() {
+        
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 22.4235499, lng: -102.7122889},
+          zoom: 5,
+          mapTypeId: 'roadmap'
+        });
+
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        searchBox.addListener('places_changed', function() {
+          
+          var places = searchBox.getPlaces();
+          
+          if (places.length == 0) {
+            return;
+          }
+
+          markers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          markers = [];
+
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var completo=document.getElementById("pac-input").value;
+            console.log(completo);
+            var json='http://www.beta.inegi.org.mx/app/mapa/api/buscador/BuscadorGeo/'+completo;
+            $.get(json,function(dato){
+              pintaZona(dato,map);
+            });
+          
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            markers.push(new google.maps.Marker({
+              map: map,
+              icon: icon,
+              title: place.name,
+              position: place.geometry.location
+            }));
+
+            if (place.geometry.viewport) {
+              
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          
+          map.fitBounds(bounds);
+        });
+      }
+      function pintaZona(contenido,map,nombre){
+        var data=[];
+            var  arreglo = contenido[0].polig.replace("POLYGON ((","");
+              arreglo = arreglo.replace("))","");
+              arreglo = arreglo.split(",");
+              console.log(arreglo);
+          for(i=0;i<arreglo.length;i++){
+            cord = arreglo[i].trim().split(" "); 
+            data[i] = {lat: parseFloat(cord[1]), lng:parseFloat(cord[0]) };
+            
+          }
+        
+        console.log(data);
+             var capa = new google.maps.Polygon({
+                paths:data,
+                strokeColor: '#F58600',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#F58600',
+                fillOpacity: 0.35
+              });
+              capa.setMap(map);
+      }
+
+    </script>
+    <script type= src="/js/capas.js"></script>
+    <script type="text/javascript" src="http://mapas2.inegi.org.mx/espacioyd_map/query?request=Json&var=geeServerDefs"></script>
+    <script type="text/javascript" src="http://www.beta.inegi.org.mx/servicios/scripts/fusion_map_obj_v3.js"></script>
+    <script type="text/javascript" src="http://www.beta.inegi.org.mx/servicios/ejemplos/listado_maps/scripts/funciones_mapa.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFsstsG9hBjRGT_Eqc0drxmcjT3LS337Y&libraries=places&callback=initAutocomplete"
+         async defer></script>
+    
+  </body>
+</html>
